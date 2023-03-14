@@ -3,6 +3,7 @@ Base settings to build other settings files upon.
 """
 from pathlib import Path
 
+import os
 import environ
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -38,8 +39,20 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {"default": env.db("DATABASE_URL")}
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+# DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'NAME': os.environ.get('POSTGRES_DB', 'django_test'),
+        'USER': os.environ.get('POSTGRES_USER', 'debug'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'debug'),
+
+    }
+}
+
+DATABASES["default"]["ATOMIC_REQUESTS"] = "true"
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -73,14 +86,20 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
+    "django_filters",
+    "rest_framework_simplejwt"
 ]
 
 LOCAL_APPS = [
+    # 'django.contrib.sites',
     "django_test.users",
+    "django_test.real_estates",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# SITE_ID = 1
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -135,6 +154,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "crum.CurrentRequestUserMiddleware"
 ]
 
 # STATIC
@@ -276,11 +296,13 @@ SOCIALACCOUNT_FORMS = {"signup": "django_test.users.forms.UserSocialSignupForm"}
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
