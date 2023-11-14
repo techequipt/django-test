@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "name": "Test 1",
+      "username": "test1",
+      "email": "test1@example.com",
+      "password": "test1password",
+      "is_active": true
+    },
+    {
+      "name": "Test 2",
+      "username": "test2",
+      "email": "test2@example.com",
+      "password": "test2password",
+      "is_active": true
+    }
+  ],
+  "properties": [
+    {
+      "address": "123 Main Street",
+      "suburb": "Sydney",
+      "is_for_sale": true,
+      "is_for_lease": false,
+      "status": "available",
+      "price": 500000,
+      "created_by_id": 1
+    },
+    {
+      "address": "456 Oak Avenue",
+      "suburb": "Melbourne",
+      "is_for_sale": false,
+      "is_for_lease": true,
+      "status": "available",
+      "price": 1500,
+      "created_by_id": 1
+    },
+    {
+      "address": "789 Elm Road",
+      "suburb": "Brisbane",
+      "is_for_sale": true,
+      "is_for_lease": true,
+      "status": "available",
+      "price": 750000,
+      "created_by_id": 2
+    },
+    {
+      "address": "101 Pine Boulevard",
+      "suburb": "Perth",
+      "is_for_sale": false,
+      "is_for_lease": false,
+      "status": "sold",
+      "price": 300000,
+      "created_by_id": 2
+    }
+  ]
+}
