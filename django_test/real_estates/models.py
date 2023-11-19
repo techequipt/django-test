@@ -10,6 +10,7 @@ from django.db.models import (
 from django_test.users.models import User
 from django.utils.translation import gettext_lazy as _
 
+
 class Property(Model):
     STATUS_CHOICES = [
         ('available', _('Available')),
@@ -26,7 +27,7 @@ class Property(Model):
     price = DecimalField(_("Price"), max_digits=10, decimal_places=2, null=True, blank=True)
 
     created_at = DateTimeField(_("Created At"), auto_now_add=True)
-    updated_at = DateTimeField(_("Updated At"),auto_now=True)
+    updated_at = DateTimeField(_("Updated At"), auto_now=True)
     created_by = ForeignKey(User, on_delete=SET_NULL, null=True, blank=True)
 
     def __str__(self):

@@ -1,11 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from ..models import Property
 from .serializers import PropertySerializer
+from .permissions import IsCreatorOrSuperuser
 
 
 class PropertyViewSet(ModelViewSet):
@@ -14,11 +13,8 @@ class PropertyViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['suburb', 'is_for_sale', 'is_for_lease', 'price', 'status']
     ordering_fields = ['price', 'created_at', 'updated_at']
-
-    def get_permissions(self):
-        if self.action == 'list':
-            return []  # everyone can see list of properties
-        return [IsAuthenticated()]
+    permission_classes = [IsCreatorOrSuperuser]
+    lookup_field = 'id'  # Specify the lookup field
 
     def get_queryset(self):
         queryset = Property.objects.all()
