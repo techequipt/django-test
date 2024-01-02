@@ -62,6 +62,7 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "django_filters",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -78,6 +79,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "django_test.users",
     # Your stuff: custom apps go here
+    "django_test.real_estates",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -281,6 +283,11 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,  # Number of items per page
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
