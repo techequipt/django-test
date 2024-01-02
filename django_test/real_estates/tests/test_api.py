@@ -122,7 +122,7 @@ class PublicPropertyAPITest(TestCase):
         ).order_by('-price', '-created_at', '-modified_at')
         serializer = PropertySerializer(properties, many=True)
 
-        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.data['results'], serializer.data)
 
     def test_retrieve_list_properties_combined_filter(self):
         """Test retrieving list properties"""
@@ -164,7 +164,7 @@ class PublicPropertyAPITest(TestCase):
         ).order_by('price', 'created_at', 'modified_at')
         serializer = PropertySerializer(properties, many=True)
 
-        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.data['results'], serializer.data)
 
     def test_retrieve_excluded_deleted_status_property(self):
         response = self.client.get(
@@ -175,7 +175,7 @@ class PublicPropertyAPITest(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(len(response.data['results']), 0)
 
     def test_create_property_unauthenticated(self):
         payload = {
@@ -382,3 +382,4 @@ class PrivateSupperUserPropertyAPITest(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Property.objects.filter(id=self.property11.id).exists())
+

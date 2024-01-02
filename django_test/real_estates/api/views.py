@@ -1,4 +1,5 @@
 """View set for the real estate app."""
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import (
     mixins,
@@ -23,6 +24,7 @@ class PropertyViewSet(
     queryset = Property.objects.exclude(status='deleted')  # exclude status has been deleted
     serializer_class = PropertySerializer  # specific Serializer class
     authentication_classes = [TokenAuthentication]  # specific Authentication type
+    pagination_class = PageNumberPagination  # Add this line to enable pagination
 
     # set filter by requirement
     filterset_fields = {
